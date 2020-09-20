@@ -3,6 +3,7 @@ package com.example.tictactoe;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +12,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[][] buttons = new Button[3][3];
+    private Button buttonReset;
+
     private boolean player1Turn = true;
+
     private int roundCount;
     private int player1Points;
     private int player2Points;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        Button buttonReset = findViewById(R.id.button_reset);
+        buttonReset = findViewById(R.id.button_reset);
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,14 +57,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        // Setting X = playstation logo
         if(player1Turn) {
             ((Button) v).setText("X");
+            v.setBackgroundResource(R.drawable.playstationlogo);
         }
+        // setting O = xbox logo
         else {
             ((Button) v).setText("O");
+            v.setBackgroundResource(R.drawable.xboxlogo);
         }
 
         roundCount++;
+
         if(checkForWin()) {
             if(player1Turn) {
                 player1Wins();
@@ -121,32 +130,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void player1Wins() {
         player1Points++;
-        Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Team Playstation wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
+        // Handler that delays resetting the board
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //do something
+                resetBoard();
+            }
+        }, 2000);
+
         resetBoard();
     }
 
     private void player2Wins() {
         player2Points++;
-        Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Team Xbox wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
+        // Handler that delays resetting the board
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //do something
+                resetBoard();
+            }
+        }, 2000);
+
         resetBoard();
     }
 
     private void draw() {
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+        // Handler that delays resetting the board
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //do something
+                resetBoard();
+            }
+        }, 1000);
         resetBoard();
     }
 
     private void updatePointsText() {
-        textViewPlayer1.setText("Player 1: " + player1Points);
-        textViewPlayer2.setText("Player 2: " + player2Points);
+        textViewPlayer1.setText("Team PlayStation: " + player1Points);
+        textViewPlayer2.setText("Team Xbox: " + player2Points);
     }
 
     private void resetBoard() {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 buttons[i][j].setText("");
+                buttons[i][j].setBackground(buttonReset.getBackground());
             }
         }
 
@@ -179,6 +215,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player1Points = savedInstanceState.getInt("player1Points");
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
+
+        restoreMyImages();
     }
 
+    void restoreMyImages() {
+        // for loop through the buttons
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+
+                Button thisButton = buttons[i][j];
+
+                if(thisButton.getText() == "X") {
+                    buttons[i][j].setBackgroundResource(R.drawable.playstationlogo);
+                }
+                else if(thisButton.getText() == "O") {
+                    buttons[i][j].setBackgroundResource(R.drawable.xboxlogo);
+                }
+
+                // Once I add images I can remove next following 2 lines because it will do it
+                //buttons[i][j].setText("");
+                //buttons[i][j].setBackground(buttonReset.getBackground());
+            }
+        }
+    }
 }
