@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 2000);
 
-        resetBoard();
+        //resetBoard();
     }
 
     private void player2Wins() {
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 2000);
 
-        resetBoard();
+        //resetBoard();
     }
 
     private void draw() {
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 resetBoard();
             }
         }, 1000);
-        resetBoard();
+        //resetBoard();
     }
 
     private void updatePointsText() {
@@ -227,15 +227,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Button thisButton = buttons[i][j];
 
                 if(thisButton.getText() == "X") {
-                    buttons[i][j].setBackgroundResource(R.drawable.playstationlogo);
+                    thisButton.setBackgroundResource(R.drawable.playstationlogo);
                 }
                 else if(thisButton.getText() == "O") {
-                    buttons[i][j].setBackgroundResource(R.drawable.xboxlogo);
+                    thisButton.setBackgroundResource(R.drawable.xboxlogo);
                 }
-
-                // Once I add images I can remove next following 2 lines because it will do it
-                //buttons[i][j].setText("");
-                //buttons[i][j].setBackground(buttonReset.getBackground());
             }
         }
     }
