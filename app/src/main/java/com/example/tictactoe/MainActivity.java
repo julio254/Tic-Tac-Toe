@@ -2,6 +2,7 @@ package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
+
+    MediaPlayer player1;
+    MediaPlayer player2;
+    MediaPlayer draw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void player1Wins() {
         player1Points++;
+
+        // Sound effects to play when player 1 wins
+        player1 = MediaPlayer.create(this, R.raw.winner);
+        player1.start();
+
         Toast.makeText(this, "Team Playstation wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
         // Handler that delays resetting the board
@@ -140,12 +150,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 resetBoard();
             }
         }, 2000);
-
-        //resetBoard();
     }
 
     private void player2Wins() {
         player2Points++;
+
+        // Sound effects to play when player 2 wins
+        player2 = MediaPlayer.create(this, R.raw.winner);
+        player2.start();
+
         Toast.makeText(this, "Team Xbox wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
         // Handler that delays resetting the board
@@ -156,11 +169,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 resetBoard();
             }
         }, 2000);
-
-        //resetBoard();
     }
 
     private void draw() {
+
+        // Sound effects if players draw
+        draw = MediaPlayer.create(this, R.raw.draw);
+        draw.start();
+
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
         // Handler that delays resetting the board
         new Handler().postDelayed(new Runnable() {
@@ -174,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updatePointsText() {
-        textViewPlayer1.setText("Team PlayStation: " + player1Points);
-        textViewPlayer2.setText("Team Xbox: " + player2Points);
+        textViewPlayer1.setText("PlayStation: " + player1Points);
+        textViewPlayer2.setText("Xbox: " + player2Points);
     }
 
     private void resetBoard() {
